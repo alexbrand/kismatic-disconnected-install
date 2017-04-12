@@ -1,0 +1,42 @@
+cluster:
+  name: kubernetes
+  admin_password: dofhugofjalehqamu
+  allow_package_installation: false # Packages are pre-installed manually
+  disconnected_installation: true # This is a disconnected install. Tell KET so that it can seed the private registry with images.
+  networking:
+    type: overlay
+    pod_cidr_block: 172.16.0.0/16
+    service_cidr_block: 172.17.0.0/16
+    policy_enabled: false
+    update_hosts_files: true
+  certificates:
+    expiry: 17520h
+  ssh:
+    user: ec2-user
+    ssh_key: /home/ec2-user/.ssh/id_rsa
+    ssh_port: 22
+docker_registry:
+  setup_internal: true # We don't have internet access, so setup an internal registry
+  address: ""
+  port: 8443
+  CA: ""
+etcd:
+  expected_count: 1
+  nodes:
+  - host: ""
+    ip: ""
+    internalip: ""
+master:
+  expected_count: 1
+  load_balanced_fqdn: "" # IMPORTANT: Use the master's internal IP here
+  load_balanced_short_name: "" # IMPORTANT: Use the master's internal IP here
+  nodes:
+  - host: ""
+    ip: ""
+    internalip: ""
+worker:
+  expected_count: 1
+  nodes:
+  - host: ""
+    ip: ""
+    internalip: ""
