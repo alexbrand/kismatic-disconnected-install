@@ -254,3 +254,36 @@ resource "aws_instance" "worker" {
     ]
   }
 }
+
+
+resource "aws_instance" "storage" {
+  connection {
+    user        = "ec2-user"
+    private_key = "${file(var.private_key_path)}"
+  }
+
+  tags {
+    KismaticRole  = "worker"
+    ProvisionedBy = "Terraform-KET-Offline-Demo"
+  }
+
+  instance_type          = "t2.micro"
+  ami                    = "${var.aws_ami}"
+  key_name               = "${aws_key_pair.auth.id}"
+  vpc_security_group_ids = ["${aws_security_group.block_internet.id}"]
+  subnet_id              = "${aws_subnet.default.id}"
+
+  # Configure the mirror repo on the nodes
+  provisioner "file" {
+    source      = "./scripts/configure-repo.sh"
+    destination = "/tmp/configure-repo.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod +x /tmp/configure-repo.sh",
+      "sudo /tmp/configure-repo.sh ${aws_instance.mirror_node.private_ip}",
+      "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel,mirror-gluster docker-engine kubelet kubectl glusterfs-server-3.8.7-1.el7",
+    ]
+  }
+}

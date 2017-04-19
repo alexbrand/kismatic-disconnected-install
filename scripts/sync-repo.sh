@@ -36,4 +36,22 @@ createrepo -v /var/www/html/rhui-REGION-rhel-server-releases/
 chown -R apache /var/www/html/rhui-REGION-rhel-server-releases/
 chgrp -R apache /var/www/html/rhui-REGION-rhel-server-releases/
 
+# Setup gluster repo
+cat > /etc/yum.repos.d/gluster.repo <<EOF
+[gluster]
+baseurl = http://buildlogs.centos.org/centos/7/storage/x86_64/gluster-3.8/
+gpgcheck = 0
+name = Gluster repo
+EOF
+
+# Sync glusterfs repo
+# Not syncing latest only, as we need an older version of gluster...
+reposync -l --repoid=gluster --download_path=/var/www/html \
+  --downloadcomps --download-metadata
+
+createrepo -v /var/www/html/gluster/
+
+chown -R apache /var/www/html/gluster/
+chgrp -R apache /var/www/html/gluster/
+
 systemctl start httpd

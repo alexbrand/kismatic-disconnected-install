@@ -40,3 +40,9 @@ worker:
   - host: ""
     ip: ""
     internalip: ""
+storage:
+  expected_count: 1
+  nodes:
+  - host: ""
+    ip: ""
+    internalip: ""

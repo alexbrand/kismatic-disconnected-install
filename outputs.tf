@@ -17,3 +17,7 @@ output "loadbalanced" {
 output "worker" {
   value = "\thost: ${aws_instance.worker.private_dns}\n\t\tip: ${aws_instance.worker.private_ip}"
 }
+
+output "storage" {
+  value = "\thost: ${aws_instance.storage.private_dns}\n\t\tip: ${aws_instance.storage.private_ip}"
+}

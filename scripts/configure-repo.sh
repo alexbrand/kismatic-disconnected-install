@@ -17,3 +17,10 @@ baseurl = http://$MIRROR_IP/rhui-REGION-rhel-server-releases
 gpgcheck = 0
 name = RHEL Packages Mirror
 EOF
+
+cat > /etc/yum.repos.d/gluster.repo <<EOF
+[mirror-gluster]
+baseurl = http://$MIRROR_IP/gluster
+gpgcheck = 0
+name = Gluster Packages Mirror
+EOF
