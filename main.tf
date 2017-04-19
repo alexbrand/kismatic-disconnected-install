@@ -284,6 +284,9 @@ resource "aws_instance" "storage" {
       "sudo chmod +x /tmp/configure-repo.sh",
       "sudo /tmp/configure-repo.sh ${aws_instance.mirror_node.private_ip}",
       "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel,mirror-gluster docker-engine kubelet kubectl glusterfs-server-3.8.7-1.el7",
+      # KET preflight checks fail if this is running on port 111
+      "sudo systemctl disable rpcbind.socket",
+      "sudo systemctl stop rpcbind.socket"
     ]
   }
 }
