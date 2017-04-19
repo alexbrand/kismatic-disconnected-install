@@ -19,6 +19,7 @@ we will run `kismatic`.
 * One "etcd" node: No internet access
 * One "master" node: No internet access
 * One "worker" node: No internet access
+* One "storage" node: No internet access
 
 ## Limitations / Known Issues
 * Transitive dependencies must also be mirrored. For now, we are mirroring the 
