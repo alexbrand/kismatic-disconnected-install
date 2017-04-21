@@ -168,7 +168,7 @@ resource "aws_instance" "etcd" {
     ProvisionedBy = "Terraform-KET-Offline-Demo"
   }
 
-  instance_type          = "t2.micro"
+  instance_type          = "t2.small"
   ami                    = "${var.aws_ami}"
   key_name               = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.block_internet.id}"]
@@ -202,7 +202,7 @@ resource "aws_instance" "master" {
     ProvisionedBy = "Terraform-KET-Offline-Demo"
   }
 
-  instance_type          = "t2.micro"
+  instance_type          = "t2.small"
   ami                    = "${var.aws_ami}"
   key_name               = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.block_internet.id}"]
@@ -234,7 +234,7 @@ resource "aws_instance" "worker" {
     ProvisionedBy = "Terraform-KET-Offline-Demo"
   }
 
-  instance_type          = "t2.micro"
+  instance_type          = "t2.small"
   ami                    = "${var.aws_ami}"
   key_name               = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.block_internet.id}"]
@@ -267,7 +267,7 @@ resource "aws_instance" "storage" {
     ProvisionedBy = "Terraform-KET-Offline-Demo"
   }
 
-  instance_type          = "t2.micro"
+  instance_type          = "t2.small"
   ami                    = "${var.aws_ami}"
   key_name               = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.block_internet.id}"]
