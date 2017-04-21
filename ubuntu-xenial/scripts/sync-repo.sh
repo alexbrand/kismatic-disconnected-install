@@ -32,7 +32,7 @@ done
 
 sudo aptly mirror create \
   -architectures=amd64 \
-  -filter="bridge-utils|nfs-common|socat|libltdl7|python2.7" \
+  -filter="bridge-utils|nfs-common|socat|libltdl7|python2.7|python-apt" \
   -filter-with-deps \
   ubuntu-main http://archive.ubuntu.com/ubuntu xenial main universe
 aptly mirror update ubuntu-main
@@ -43,7 +43,7 @@ aptly snapshot create ubuntu-main from mirror ubuntu-main
 aptly snapshot merge mirror-repo kismatic ubuntu-main
 
 # Publish the mirror
-aptly publish snapshot -batch -skip-signing=true -distribution=xenial mirror-repo
+aptly publish snapshot -batch -skip-signing=true -distribution=kismatic-xenial mirror-repo
 
 # Serve the repositories
 cat <<EOF > /etc/systemd/system/aptly.service
