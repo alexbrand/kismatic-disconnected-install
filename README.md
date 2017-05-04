@@ -43,7 +43,7 @@ we will run `kismatic`.
 * Transitive dependencies must also be mirrored. For now, we are mirroring the 
 entire `RHEL server releases` repository, which is wasteful and slow.
 
-# Infrastructure setup
+## Infrastructure setup
 1. Create an SSH keypair with no password:
 ```
 ssh-keygen -t rsa -b 4096 -f ssh.key
