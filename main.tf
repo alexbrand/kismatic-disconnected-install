@@ -132,8 +132,11 @@ resource "aws_instance" "mirror_node" {
       "sudo /tmp/sync-repo.sh",
       "sudo yum install -y wget",
       "wget https://github.com/apprenda/kismatic/releases/download/v1.3.0/kismatic-v1.3.0-linux-amd64.tar.gz",
+      "wget https://github.com/apprenda/kismatic/releases/download/v1.3.2/kismatic-v1.3.2-linux-amd64.tar.gz",
       "mkdir ~/kismatic",
+      "mkdir ~/kismatic2",
       "tar -C ~/kismatic -xvf kismatic-v1.3.0-linux-amd64.tar.gz",
+      "tar -C ~/kismatic2 -xvf kismatic-v1.3.2-linux-amd64.tar.gz",
     ]
   }
 
@@ -168,7 +171,7 @@ resource "aws_instance" "etcd" {
     ProvisionedBy = "Terraform-KET-Offline-Demo"
   }
 
-  instance_type          = "t2.micro"
+  instance_type          = "t2.small"
   ami                    = "${var.aws_ami}"
   key_name               = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.block_internet.id}"]
@@ -184,7 +187,7 @@ resource "aws_instance" "etcd" {
     inline = [
       "sudo chmod +x /tmp/configure-repo.sh",
       "sudo /tmp/configure-repo.sh ${aws_instance.mirror_node.private_ip}",
-      "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel etcd",
+      "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel etcd-3.1.4-1",
     ]
   }
 }
@@ -202,7 +205,7 @@ resource "aws_instance" "master" {
     ProvisionedBy = "Terraform-KET-Offline-Demo"
   }
 
-  instance_type          = "t2.micro"
+  instance_type          = "t2.small"
   ami                    = "${var.aws_ami}"
   key_name               = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.block_internet.id}"]
@@ -218,7 +221,7 @@ resource "aws_instance" "master" {
     inline = [
       "sudo chmod +x /tmp/configure-repo.sh",
       "sudo /tmp/configure-repo.sh ${aws_instance.mirror_node.private_ip}",
-      "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel docker-engine kubelet kubectl kismatic-offline",
+      "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel docker-engine-1.11.2-1.el7.centos kubelet-1.6.0_1-1 kubectl-1.6.0_1-1 kismatic-offline-1.6.0_1-1",
     ]
   }
 }
@@ -234,7 +237,7 @@ resource "aws_instance" "worker" {
     ProvisionedBy = "Terraform-KET-Offline-Demo"
   }
 
-  instance_type          = "t2.micro"
+  instance_type          = "t2.small"
   ami                    = "${var.aws_ami}"
   key_name               = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.block_internet.id}"]
@@ -250,7 +253,7 @@ resource "aws_instance" "worker" {
     inline = [
       "sudo chmod +x /tmp/configure-repo.sh",
       "sudo /tmp/configure-repo.sh ${aws_instance.mirror_node.private_ip}",
-      "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel docker-engine kubelet kubectl",
+      "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel docker-engine-1.11.2-1.el7.centos kubelet-1.6.0_1-1 kubectl-1.6.0_1-1",
     ]
   }
 }
@@ -263,11 +266,11 @@ resource "aws_instance" "storage" {
   }
 
   tags {
-    KismaticRole  = "worker"
+    KismaticRole  = "storage"
     ProvisionedBy = "Terraform-KET-Offline-Demo"
   }
 
-  instance_type          = "t2.micro"
+  instance_type          = "t2.small"
   ami                    = "${var.aws_ami}"
   key_name               = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.block_internet.id}"]
@@ -283,7 +286,7 @@ resource "aws_instance" "storage" {
     inline = [
       "sudo chmod +x /tmp/configure-repo.sh",
       "sudo /tmp/configure-repo.sh ${aws_instance.mirror_node.private_ip}",
-      "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel,mirror-gluster docker-engine kubelet kubectl glusterfs-server-3.8.7-1.el7",
+      "sudo yum install -y --disablerepo=* --enablerepo=kismatic,mirror-rhel,mirror-gluster docker-engine-1.11.2-1.el7.centos kubelet-1.6.0_1-1 kubectl-1.6.0_1-1 glusterfs-server-3.8.7-1.el7",
       # KET preflight checks fail if this is running on port 111
       "sudo systemctl disable rpcbind.socket",
       "sudo systemctl stop rpcbind.socket"

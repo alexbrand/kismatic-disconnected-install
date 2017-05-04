@@ -18,7 +18,7 @@ name = Kismatic Packages
 EOF
 
 # Perform repository sync - this takes some time...
-reposync -l -n --repoid=kismatic --download_path=/var/www/html \
+reposync -l --repoid=kismatic --download_path=/var/www/html \
  --downloadcomps --download-metadata
 
 createrepo -v  /var/www/html/kismatic/ 

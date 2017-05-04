@@ -4,6 +4,11 @@ set -e
 
 MIRROR_IP=$1
 
+# Need to disable unaccessible repos
+mv /etc/yum.repos.d /etc/yum.repos.d.inaccessible
+
+mkdir /etc/yum.repos.d
+
 cat > /etc/yum.repos.d/kismatic.repo <<EOF
 [kismatic]
 baseurl = http://$MIRROR_IP/kismatic
